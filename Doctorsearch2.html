@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Doctor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .search-container {
+            margin-top: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        #search-input {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            background-color: white;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            border-radius: 4px;
+            z-index: 10;
+            display: none;
+        }
+
+        .dropdown li {
+            padding: 10px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .dropdown li:hover {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Find a doctor at your own ease</h1>
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search for a doctor...">
+            <ul id="dropdown" class="dropdown">
+                <li data-page="dentists.html">Dental</li>
+                <li data-page="gynecology.html">Obstetrics and Gynecology</li>
+                <li data-page="general.html">General Practitioner</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        const searchInput = document.getElementById("search-input");
+        const dropdown = document.getElementById("dropdown");
+
+        // إظهار القائمة عند التركيز على مربع البحث
+        searchInput.addEventListener("focus", () => {
+            dropdown.style.display = "block";
+        });
+
+        // إخفاء القائمة عند النقر خارج مربع البحث أو القائمة
+        document.addEventListener("click", (e) => {
+            if (!e.target.closest(".search-container")) {
+                dropdown.style.display = "none";
+            }
+        });
+
+        // التنقل إلى الصفحة المحددة عند اختيار التخصص
+        dropdown.addEventListener("click", (e) => {
+            if (e.target.tagName === "LI") {
+                const page = e.target.getAttribute("data-page");
+                if (page) {
+                    window.location.href = page;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

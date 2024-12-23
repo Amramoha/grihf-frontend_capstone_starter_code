@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+    .header {
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+    .logout-button {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+    }
+    .logout-button:hover {
+      background-color: #c82333;
+    }
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    input:focus, select:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .error-message {
+      color: red;
+      font-size: 0.85em;
+      margin-bottom: 10px;
+    }
+    .actions {
+      display: flex;
+      justify-content: space-between;
+    }
+    .actions button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .actions .submit {
+      background-color: #007bff;
+      color: white;
+    }
+    .actions .reset {
+      background-color: #dc3545;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Logout Button -->
+  <div class="header">
+    <h1>Welcome</h1>
+    <button class="logout-button" id="logoutButton">Logout</button>
+  </div>
+
+  <div class="container">
+    <h2>Sign Up</h2>
+    <p style="text-align: center;">Already a member? <a href="#">Login</a></p>
+    <form id="signupForm">
+      <!-- Name Field -->
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Enter your name" required>
+      <div id="nameError" class="error-message"></div>
+
+      <!-- Role Field -->
+      <label for="role">Role</label>
+      <select id="role" required>
+        <option value="">Select role</option>
+        <option value="doctor">Doctor</option>
+        <option value="patient">Patient</option>
+      </select>
+      <div id="roleError" class="error-message"></div>
+
+      <!-- Phone Field -->
+      <label for="phone">Phone</label>
+      <input type="tel" id="phone" placeholder="Enter your phone number" required pattern="^\d{10}$">
+      <div id="phoneError" class="error-message"></div>
+
+      <!-- Email Field -->
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required>
+      <div id="emailError" class="error-message"></div>
+
+      <!-- Password Field -->
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required minlength="6">
+      <div id="passwordError" class="error-message"></div>
+
+      <!-- Action Buttons -->
+      <div class="actions">
+        <button type="submit" class="submit">Submit</button>
+        <button type="reset" class="reset">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Logout button functionality
+    document.getElementById('logoutButton').addEventListener('click', function () {
+      const confirmLogout = confirm('Are you sure you want to logout?');
+      if (confirmLogout) {
+        alert('You have been logged out.');
+        // Redirect to login page or perform other actions
+        window.location.href = 'login.html'; // Replace with your login page URL
+      }
+    });
+
+    // Function to validate a specific field
+    function validateField(fieldId, errorId, validationFn, errorMessage) {
+      const field = document.getElementById(fieldId);
+      const error = document.getElementById(errorId);
+
+      field.addEventListener('blur', function () {
+        if (!validationFn(field.value)) {
+          error.textContent = errorMessage;
+        } else {
+          error.textContent = '';
+        }
+      });
+
+      field.addEventListener('input', function () {
+        if (validationFn(field.value)) {
+          error.textContent = '';
+        }
+      });
+    }
+
+    // Validation functions
+    const isNotEmpty = value => value.trim() !== '';
+    const isValidPhone = value => /^\d{10}$/.test(value);
+    const isValidEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    const isValidPassword = value => value.length >= 6;
+
+    // Validate fields
+    validateField('name', 'nameError', isNotEmpty, 'Please enter your name.');
+    validateField('role', 'roleError', isNotEmpty, 'Please select a role.');
+    validateField('phone', 'phoneError', isValidPhone, 'Please enter a valid 10-digit phone number.');
+    validateField('email', 'emailError', isValidEmail, 'Please enter a valid email address.');
+    validateField('password', 'passwordError', isValidPassword, 'Password must be at least 6 characters long.');
+
+    // Form submission
+    document.getElementById('signupForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const errors = document.querySelectorAll('.error-message');
+      const hasErrors = Array.from(errors).some(error => error.textContent !== '');
+
+      if (!hasErrors) {
+        alert('Form submitted successfully!');
+      } else {
+        alert('Please fix the errors in the form.');
+      }
+    });
+
+    // Reset button clears all errors
+    document.querySelector('.reset').addEventListener('click', function () {
+      document.querySelectorAll('.error-message').forEach(msg => msg.textContent = '');
+    });
+  </script>
+</body>
+</html>

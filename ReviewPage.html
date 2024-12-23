@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Page</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        button:disabled {
+            background-color: #ccc;
+        }
+        /* Modal Style */
+        .modal {
+            display: none; /* Hide the modal initially */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+        }
+        .modal-content input, .modal-content textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Review Page</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Doctor's Name</th>
+                <th>Specialty</th>
+                <th>Give Review</th>
+                <th>Review Given</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Dr. Ahmed Ali</td>
+                <td>General Surgery</td>
+                <td><button onclick="openReviewModal(this)">Give review</button></td>
+                <td><span>No review yet</span></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Dr. Fatima Zahra</td>
+                <td>Pediatrics</td>
+                <td><button onclick="openReviewModal(this)">Give review</button></td>
+                <td><span>No review yet</span></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Dr. Youssef Mohamed</td>
+                <td>Cardiology</td>
+                <td><button onclick="openReviewModal(this)">Give review</button></td>
+                <td><span>No review yet</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Review Input Modal -->
+    <div class="modal" id="reviewModal">
+        <div class="modal-content">
+            <h3>Enter Review</h3>
+            <label for="reviewerName">Your Name:</label>
+            <input type="text" id="reviewerName" placeholder="Enter your name" required>
+            <label for="reviewText">Review:</label>
+            <textarea id="reviewText" placeholder="Enter your review" required></textarea>
+            <button onclick="submitReview()">Submit</button>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let currentButton = null;
+
+        // Open the modal when clicking "Give review"
+        function openReviewModal(button) {
+            currentButton = button; // Store the clicked button
+            document.getElementById('reviewModal').style.display = 'flex'; // Show the modal
+        }
+
+        // Close the modal
+        function closeModal() {
+            document.getElementById('reviewModal').style.display = 'none'; // Hide the modal
+        }
+
+        // Submit the review and update the table
+        function submitReview() {
+            var reviewerName = document.getElementById('reviewerName').value;
+            var reviewText = document.getElementById('reviewText').value;
+
+            if (reviewerName && reviewText) {
+                // Disable the "Give review" button
+                currentButton.disabled = true;
+
+                // Update the "Review Given" cell in the table
+                var row = currentButton.parentElement.parentElement;
+                var reviewCell = row.cells[4]; // 5th cell (Review Given)
+                reviewCell.innerHTML = Review given: <strong>${reviewText}</strong> by ${reviewerName};
+
+                // Close the modal
+                closeModal();
+            } else {
+                alert("Please fill in all fields.");
+            }
+        }
+    </script>
+
+</body>
+</html>
